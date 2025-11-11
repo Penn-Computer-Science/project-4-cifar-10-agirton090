@@ -2,8 +2,9 @@ import seaborn as sns
 import tensorflow as tf
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 
-from tensorflow.keras.datasets import cifar10
+from keras.datasets import cifar10
                                                                                                                                                
 (x_train, y_train), (x_test, y_test) = cifar10.load_data()
 
@@ -14,8 +15,11 @@ class_names = [
     "airplane", "automobile","bird", "cat", "deer", "dog", "frog", "horse", "ship", "truck"
 ]
 
+print("Training Shape:", x_train.shape)
+print("Testing Shape:", x_train.shape)
 print("Any NaN Training:", np.isnan(x_train).any())
 print("Any NaN Testing:", np.isnan(x_test).any())
+
 
 input_shape = (32, 32, 3)
 num_classes = 10
@@ -41,13 +45,19 @@ model = tf.keras.models.Sequential(
 )
 
 
-model.compile(optimizer='adam',loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+model.compile(optimizer='adam',
+              loss='sparse_categorical_crossentropy',
+              metrics=['accuracy'])
 
-history = model.fit(x_train, y_train,epochs=10,validation_data=(x_test, y_test))
+history = model.fit(
+    x_train, y_train,
+    epochs=10,
+    batch_size = 128,
+    validation_data=(x_test, y_test)
+)
 
-
-batch_size = 128
-epochs = 10
+plt.tight_layout()
+plt.show()
 
 
 
