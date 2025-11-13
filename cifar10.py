@@ -16,7 +16,7 @@ class_names = [
 ]
 
 print("Training Shape:", x_train.shape)
-print("Testing Shape:", x_train.shape)
+print("Testing Shape:", x_test.shape)
 print("Any NaN Training:", np.isnan(x_train).any())
 print("Any NaN Testing:", np.isnan(x_test).any())
 
@@ -27,12 +27,12 @@ num_classes = 10
 model = tf.keras.models.Sequential(
     [
         tf.keras.layers.Conv2D(64, (3,3), padding='same', activation='relu', input_shape=input_shape),
-        tf.keras.layers.Conv2D(64, (3,3), padding='same', activation='relu', input_shape=input_shape),
+        tf.keras.layers.Conv2D(64, (3,3), padding='same', activation='relu'),
         tf.keras.layers.MaxPool2D(),
         tf.keras.layers.Dropout(0.25),
 
-        tf.keras.layers.Conv2D(128, (3,3), padding='same', activation='relu', input_shape=input_shape),
-        tf.keras.layers.Conv2D(128, (3,3), padding='same', activation='relu', input_shape=input_shape),
+        tf.keras.layers.Conv2D(128, (3,3), padding='same', activation='relu'),
+        tf.keras.layers.Conv2D(128, (3,3), padding='same', activation='relu'),
         tf.keras.layers.MaxPool2D(),
         tf.keras.layers.Dropout(0.25),
 
@@ -56,13 +56,30 @@ history = model.fit(
     validation_data=(x_test, y_test)
 )
 
+plt.figure(figsize=(7,5))
+plt.plot(history.history['accuracy'], label='Train Accuracy')
+plt.plot(history.history['val_accuracy'], label='Validation Accuracy')
+plt.title("Training vs Validation Accuracy")
+plt.xlabel("Epochs")
+plt.ylabel("Accuracy")
+plt.legend()
+plt.grid(True)
+plt.show()
+
+plt.figure(figsize=(7,5))
+plt.plot(history.history['loss'], label='Train Loss')
+plt.plot(history.history['val_loss'], label='Validation Loss')
+plt.title("Training vs Validation Loss")
+plt.xlabel("Epochs")
+plt.ylabel("Loss")
+plt.legend()
+plt.grid(True)
+plt.show()
+
 plt.tight_layout()
 plt.show()
 
+test_loss, test_acc = model.evaluate(x_test, y_test)
+print('Test Accuracy:', test_acc)
 
-
-
-
-
-
-
+predictions = model.predict(x_test)
