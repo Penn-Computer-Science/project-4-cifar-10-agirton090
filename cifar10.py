@@ -79,7 +79,7 @@ plt.show()
 plt.tight_layout()
 plt.show()
 
+predictions = model.predict(x_test)
+
 test_loss, test_acc = model.evaluate(x_test, y_test)
 print('Test Accuracy:', test_acc)
-
-predictions = model.predict(x_test)
