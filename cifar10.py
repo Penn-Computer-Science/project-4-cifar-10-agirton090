@@ -37,6 +37,8 @@ model = tf.keras.models.Sequential(
         tf.keras.layers.Dropout(0.25),
 
         tf.keras.layers.Flatten(),
+        tf.keras.layers.Dense(256, activation='relu'),
+        tf.keras.layers.Dropout(0.25),
         tf.keras.layers.Dense(num_classes, activation='softmax')
 
 
@@ -80,6 +82,24 @@ plt.tight_layout()
 plt.show()
 
 predictions = model.predict(x_test)
-
+                                                                                                               
 test_loss, test_acc = model.evaluate(x_test, y_test)
 print('Test Accuracy:', test_acc)
+
+predict = model.predict(x_test)
+for i in range(5):
+    pred_label = np.argmax(predict[i])
+    true_label = int(y_test[i])
+
+    print("Image", i) 
+    print("Predicted:", class_names[pred_label])
+    print("Actual:", class_names[true_label])
+    print()
+
+    plt.imshow(x_test[i])
+    plt.title(class_names[pred_label])
+    plt.axis("off")
+    plt.show()
+
+
+
